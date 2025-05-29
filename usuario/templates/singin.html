@@ -1,11 +1,92 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Iniciar sesión</button>
-</form>
+{% load static %}
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio de sesión</title>
+  {% bootstrap_css %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  {% bootstrap_javascript %}
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      font-family: 'Helvetica Neue', sans-serif;
+    }
 
-{% if messages %}
-  {% for message in messages %}
-    <p style="color:red;">{{ message }}</p>
-  {% endfor %}
-{% endif %}
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 1rem;
+    }
+
+    .login-container {
+      background: transparent;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .login-logo {
+      width: 120px;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+      border-radius: 0.75rem;
+    }
+
+    .btn-colorprimary {
+      background-color: var(--button-color);
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      padding: 0.6rem 1.2rem;
+      margin-top: 1rem;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-colorprimary:hover {
+      background-color: #6c78c9;
+    }
+
+    label {
+      color: var(--text-color);
+      text-align: left;
+      width: 100%;
+      display: block;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <img src="{% static 'image/powercheck_logo.png' %}" alt="Logo" class="login-logo">
+      <h1 class="mb-3">Iniciar sesión</h1>
+      <p class="mb-4">Por favor, ingresa tus credenciales.</p>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-colorprimary">Iniciar sesión</button>
+      </form>
+      {% if messages %}
+        {% for message in messages %}
+          <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

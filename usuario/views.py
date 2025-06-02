@@ -3,21 +3,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login ,logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from usuario.decorators import admin_required 
+from usuario.decorators import admin_required, entrenador_required, atleta_required
 
+def inicio(request):
+    return render(request,'inicio.html')
 
 def signin(request):
     if request.user.is_authenticated:
         user = request.user
-        if user.groups.filter(name='admin').exists():
-            return redirect('admin:index')
+        if user.groups.filter(name='administrador').exists():
+            return redirect('usuario:administrador_dashboard')
         elif user.groups.filter(name='entrenador').exists():
-            return redirect('entrenador:index')
+            return redirect('entrenador_dashboard')
         elif user.groups.filter(name='atleta').exists():
-            return redirect('atleta:index')
+            return redirect('atleta_dashboard')
         else:
             messages.error(request, "No perteneces a ningún grupo válido.")
-            return redirect('singin.html')
+            return redirect('signin.html')
 
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -25,23 +27,32 @@ def signin(request):
             user = form.get_user()
             login(request, user)
 
-            if user.groups.filter(name='admin').exists():
-                return redirect('admin:index')
+            if user.groups.filter(name='administrador').exists():
+                return redirect('usuario:administrador_dashboard')
             elif user.groups.filter(name='entrenador').exists():
-                return redirect('entrenador:index')
+                return redirect('usuario:entrenador_dashboard')
             elif user.groups.filter(name='atleta').exists():
-                return redirect('atleta:index')
+                return redirect('atleta_dashboard')
             else:
                 messages.error(request, "No perteneces a ningún grupo válido.")
-                return redirect('singin.html')
+                return redirect('signin.html')
         else:
             messages.error(request, "Usuario o contraseña incorrectos.")
     else:
         form = AuthenticationForm()
 
-    return render(request, 'singin.html', {'form': form})
+    return render(request, 'signin.html', {'form': form})
 
 
+@admin_required
+def administrador_dashboard(request):
+    return render(request, 'administrador/dashboard.html')
+@entrenador_required
+def entrenador_dashboard(request):
+    return render(request, 'entrenador/dashboard.html')
+@atleta_required
+def atleta_dashboard(request):
+    return redirect(request, 'atleta/dashboard.html')
 def signout(request):
     logout(request)
     messages.success(request, "Has cerrado sesión correctamente.")

@@ -1,69 +1,136 @@
 :root {
-    --primary-color: #010626;
-    --text-color: #e0e0e0;
-    --button-color: #8491d9;
-    --input-bg: #fff;
-    --input-border-radius: 12px;
-    --font-family-base: 'Helvetica Neue', sans-serif;
-    --font-family-button: 'Roboto', sans-serif;
+  --primary-color: #010626;
+  --text-color: #e0e0e0;
+  --button-color: #8491d9;
+  --button-hover: #6c78c9;
+  --input-bg: #fff;
+  --input-border-radius: 12px;
+  --font-family-base: 'Helvetica Neue', sans-serif;
+  --font-family-button: 'Roboto', sans-serif;
 }
 
-/* Background y texto */
-.bg-colorprimary {
-    background-color: var(--primary-color);
+/* Fondo general */
+body {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: var(--font-family-base);
+  margin: 0;
+  padding: 0;
 }
 
-.text-colorprimary {
-    color: var(--text-color);
-}
-
-/* Botón */
+/* Botones */
 .btn-colorprimary {
-    background-color: var(--button-color);
-    color: white;
-    font-family: var(--font-family-button);
-    font-weight: 500;
-    border: none;
-    border-radius: 12px;
-    padding: 0.6rem 1.2rem;
-    margin-top: 1rem;
-    width: 100%;
-    transition: background-color 0.3s ease;
+  background-color: var(--button-color);
+  color: #fff;
+  font-family: var(--font-family-button);
+  font-weight: 500;
+  border: none;
+  border-radius: 12px;
+  padding: 0.6rem 1.2rem;
+  width: 100%;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
 }
+
 .btn-colorprimary:hover {
-    background-color: #6c78c9;
+  background-color: var(--button-hover);
 }
 
 /* Inputs */
-input.form-control, select.form-control, textarea.form-control {
-    border-radius: var(--input-border-radius);
-    background-color: var(--input-bg);
-    color: #000;
+input.form-control,
+select.form-control,
+textarea.form-control {
+  background-color: var(--input-bg);
+  color: #000;
+  border-radius: var(--input-border-radius);
 }
 
-/* Etiquetas */
-label, .form-check-label, p {
-    color: var(--text-color);
-    font-family: var(--font-family-base);
+/* Etiquetas y textos */
+label,
+.form-check-label,
+p {
+  color: var(--text-color);
 }
 
-/* Logo */
+/* Logo login */
 .login-logo {
-    width: 120px;
-    margin-bottom: 1.5rem;
+  width: 120px;
+  margin-bottom: 1.5rem;
 }
 
-/* Contenedor centrado */
+/* Contenedor login */
 .login-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 2rem;
-    text-align: center;
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-/* Responsive padding */
-@media (max-width: 576px) {
-    .login-container {
-        padding: 1rem;
-    }
+/* Sidebar escritorio */
+.sidebar-desktop {
+  background-color: #111;
+  min-height: 100vh;
+  padding: 1.5rem;
+  color: #fff;
+}
+
+.sidebar-desktop .nav-link {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.sidebar-desktop .nav-link img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Ocultar menú móvil en escritorio */
+@media (min-width: 768px) {
+  .sidebar-mobile {
+    display: none !important;
+  }
+}
+
+/* Sidebar móvil */
+.sidebar-mobile {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #111;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0;
+  z-index: 9999;
+}
+
+.sidebar-mobile a {
+  color: var(--text-color);
+  text-align: center;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.sidebar-mobile a img {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 4px;
+}
+
+/* Ocultar sidebar escritorio en móvil */
+@media (max-width: 767.98px) {
+  .sidebar-desktop {
+    display: none !important;
+  }
+
+  .content-area {
+    padding-bottom: 60px;
+  }
 }

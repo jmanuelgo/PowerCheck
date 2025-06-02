@@ -12,6 +12,6 @@ def grupos(nombre_grupo):
     return decorador
 
 # Atajos para cada grupo
-admin_required = grupos('admin')
+admin_required = grupos('administrador')
 entrenador_required = grupos('entrenador')
 atleta_required = grupos('atleta')

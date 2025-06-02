@@ -1,0 +1,71 @@
+{% load static %}
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel PowerCheck</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% bootstrap_css %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  {% bootstrap_javascript %}
+</head>
+<body>
+
+<div class="container-fluid ">
+  <div class="row vh-100 flex-column flex-md-row">
+
+    <!-- Sidebar escritorio -->
+    <nav class="col-md-2 sidebar-desktop">
+      <h4>PowerCheck</h4>
+      <a href="#" class="nav-link">
+        <img src="{% static 'image/home.svg' %}" alt="Inicio">
+        Inicio
+      </a>
+      <a href="#" class="nav-link">
+        <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
+        Entrenadores
+      </a>
+      <a href="#" class="nav-link">
+        <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
+        Gimnasios
+      </a>
+      <hr>
+      <div>
+        <span>{{ request.user.first_name|default:request.user.username }}</span><br>
+        <a href="{% url 'usuario:signout' %}" class="text-white">Cerrar sesión</a>
+      </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="col-md-10 p-4 content-area">
+      <h2>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h2>
+      <p>Aquí puedes gestionar usuarios, gimnasios y ver estadísticas.</p>
+
+      {% block content %}
+      <!-- Aquí va el contenido dinámico -->
+      {% endblock %}
+    </main>
+  </div>
+</div>
+
+<!-- Menú móvil -->
+<div class="sidebar-mobile">
+  <a href="#">
+    <img src="{% static 'image/home.svg' %}" alt="Inicio">
+    <span>Inicio</span>
+  </a>
+  <a href="#">
+    <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
+    <span>Entrenadores</span>
+  </a>
+  <a href="#">
+    <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
+    <span>Gimnasios</span>
+  </a>
+</div>
+
+</body>
+</html>
+

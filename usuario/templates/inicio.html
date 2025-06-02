@@ -1,0 +1,44 @@
+{% load bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    {% bootstrap_javascript %}
+</head>
+<body class="bg-colorprimary text-textcolor">
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <div class="container-fluid ps-3">
+            <!--Logo-->
+            <a href="#" class="navbar-brand">
+                <img src="{% static 'image/powercheck_logito.jpeg' %}" alt="Logo" width="128" height="64">
+            </a>
+            <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item max-4">
+                    <a href="#" class="nav-link active" aria-current="page">Inicio</a>
+                </li>
+                <li class="nav-item max-4">
+                    <a href="#" class="nav-link">Powerlifting/ABP</a>
+                </li>
+                <li class="nav-item max-4">
+                    <a href="#" class="nav-link">Gyms</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <a href="{% url 'usuario:signin' %}" class="btn btn-colorprimary">Iniciar Sesión</a>
+            </div>
+        </div>
+
+    </nav>
+    
+</body>
+</html>

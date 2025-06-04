@@ -1,2 +1,40 @@
 {% extends "administrador/dashboard.html" %}
+
 {% block title %}PowerCheck Administrador - Gimnasios{% endblock %}
+
+{% block content %}
+<h3>Lista de Gimnasios</h3>
+<div class="table-responsive">
+  <table class="table table-hover table-bordered mt-3">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Logo</th>
+        <th>Nombre</th>
+        <th>Ubicación</th>
+        <th>Celular</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for gym in gyms %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>
+          <img src="{{ gym.logo.url }}" alt="Logo de {{ gym.nombre }}" width="50" height="50" class="rounded">
+        </td>
+        <td>{{ gym.nombre }}</td>
+        <td>{{ gym.ubucacion }}</td>
+        <td>{{ gym.celular }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center">No hay gimnasios registrados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'usuario:crear_gym' %}">
+  <button>Crear nuevo gimnasio</button>
+</a>
+</div>
+{% endblock %}

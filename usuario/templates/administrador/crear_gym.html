@@ -1,0 +1,19 @@
+{% extends "administrador/dashboard.html" %}
+
+{% block content %}
+  <h2>Crear Gimnasio</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear</button>
+  </form>
+
+  <a href="{% url 'usuario:administrador_gimnasios' %}">Volver a la lista</a>
+{% endblock %}

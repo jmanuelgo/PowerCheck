@@ -5,7 +5,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Panel PowerCheck</title>
+  <title>{% block title %}Dashboard{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% bootstrap_css %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -14,22 +14,21 @@
 </head>
 
 <body>
+  <div class="container-fluid">
+    <div class="row vh-100">
 
-  <div class="container-fluid ">
-    <div class="row vh-100 flex-column flex-md-row">
-
-      <!-- Sidebar escritorio -->
+      <!-- Sidebar -->
       <nav class="col-md-2 sidebar-desktop">
         <h4>PowerCheck</h4>
-        <a href="#" class="nav-link">
+        <a href="{% url 'usuario:administrador_dashboard' %}" class="nav-link">
           <img src="{% static 'image/home.svg' %}" alt="Inicio">
           Inicio
         </a>
-        <a href="#" class="nav-link">
+        <a href="{% url 'usuario:administrador_entrenadores' %}" class="nav-link">
           <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
           Entrenadores
         </a>
-        <a href="#" class="nav-link">
+        <a href="{% url 'usuario:administrador_gimnasios' %}" class="nav-link">
           <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
           Gimnasios
         </a>
@@ -50,45 +49,49 @@
 
       </nav>
 
-      <!-- Contenido principal -->
-      <main class="col-md-10 p-4 content-area">
-        <h2>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h2>
-        <p>Aquí puedes gestionar usuarios, gimnasios y ver estadísticas.</p>
+      <!-- Contenedor derecho con header + contenido -->
+      <div class="col-md-10 d-flex flex-column p-0">
 
-        {% block content %}
-        <!-- Aquí va el contenido dinámico -->
-        {% endblock %}
-      </main>
+        <!-- Header -->
+        <header class="bg-white border-bottom p-3">
+          <h2>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h2>
+          <p class="mb-0">Aquí puedes gestionar usuarios, gimnasios y ver estadísticas.</p>
+        </header>
+
+        <!-- Contenido dinámico -->
+        <main class="flex-grow-1 p-4">
+          {% block content %}
+          <!-- Aquí va el contenido dinámico -->
+          {% endblock %}
+        </main>
+      </div>
     </div>
   </div>
 
   <!-- Menú móvil -->
-<div class="sidebar-mobile">
-  <a href="#">
-    <img src="{% static 'image/home.svg' %}" alt="Inicio">
-    <span>Inicio</span>
-  </a>
-  <a href="#">
-    <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
-    <span>Entrenadores</span>
-  </a>
-  <a href="#">
-    <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
-    <span>Gimnasios</span>
-  </a>
-  <div class="dropdown dropup">
-    <a class="dropdown-toggle d-flex flex-column align-items-center text-decoration-none" href="#" id="dropdownUserMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <span>{{ request.user.first_name|default:request.user.username }}</span>
+  <div class="sidebar-mobile d-md-none">
+    <a href="#">
+      <img src="{% static 'image/home.svg' %}" alt="Inicio">
+      <span>Inicio</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end text-center " aria-labelledby="dropdownUserMobile">
-      <li><a class="dropdown-item" href="#">Perfil</a></li>
-      <li><a class="dropdown-item" href="{% url 'usuario:signout' %}">Cerrar sesión</a></li>
-    </ul>
+    <a href="#">
+      <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
+      <span>Entrenadores</span>
+    </a>
+    <a href="#">
+      <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
+      <span>Gimnasios</span>
+    </a>
+    <div class="dropdown dropup">
+      <a class="dropdown-toggle d-flex flex-column align-items-center text-decoration-none" href="#" id="dropdownUserMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span>{{ request.user.first_name|default:request.user.username }}</span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="dropdownUserMobile">
+        <li><a class="dropdown-item" href="#">Perfil</a></li>
+        <li><a class="dropdown-item" href="{% url 'usuario:signout' %}">Cerrar sesión</a></li>
+      </ul>
+    </div>
   </div>
-</div>
-
-
-
 </body>
 
 </html>

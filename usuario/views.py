@@ -46,7 +46,14 @@ def signin(request):
 
 @admin_required
 def administrador_dashboard(request):
-    return render(request, 'administrador/dashboard.html')
+    return render(request, 'administrador/inicio.html')
+@admin_required
+def administrador_entrenadores(request):
+    return render(request, 'administrador/entrenadores.html')
+
+@admin_required
+def administrador_gimnasios(request):
+    return render(request, 'administrador/gym.html')
 @entrenador_required
 def entrenador_dashboard(request):
     return render(request, 'entrenador/dashboard.html')

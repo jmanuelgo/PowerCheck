@@ -10,7 +10,7 @@ class Gym(models.Model):
     celular = models.CharField(max_length=15, blank=False, null=False)
 
     def __str__(self):
-        return self.name
+        return self.nombre
     
 class Entrenador(models.Model):
     nombre = models.CharField(max_length=100, blank=False, null=False)

@@ -2,6 +2,7 @@
 {% load bootstrap5 %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Panel PowerCheck</title>
@@ -11,46 +12,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   {% bootstrap_javascript %}
 </head>
+
 <body>
 
-<div class="container-fluid ">
-  <div class="row vh-100 flex-column flex-md-row">
+  <div class="container-fluid ">
+    <div class="row vh-100 flex-column flex-md-row">
 
-    <!-- Sidebar escritorio -->
-    <nav class="col-md-2 sidebar-desktop">
-      <h4>PowerCheck</h4>
-      <a href="#" class="nav-link">
-        <img src="{% static 'image/home.svg' %}" alt="Inicio">
-        Inicio
-      </a>
-      <a href="#" class="nav-link">
-        <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
-        Entrenadores
-      </a>
-      <a href="#" class="nav-link">
-        <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
-        Gimnasios
-      </a>
-      <hr>
-      <div>
-        <span>{{ request.user.first_name|default:request.user.username }}</span><br>
-        <a href="{% url 'usuario:signout' %}" class="text-white">Cerrar sesión</a>
-      </div>
-    </nav>
+      <!-- Sidebar escritorio -->
+      <nav class="col-md-2 sidebar-desktop">
+        <h4>PowerCheck</h4>
+        <a href="#" class="nav-link">
+          <img src="{% static 'image/home.svg' %}" alt="Inicio">
+          Inicio
+        </a>
+        <a href="#" class="nav-link">
+          <img src="{% static 'image/coach.svg' %}" alt="Entrenadores">
+          Entrenadores
+        </a>
+        <a href="#" class="nav-link">
+          <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
+          Gimnasios
+        </a>
+        <hr>
+        <div class="dropdown mt-4">
+          <a href="#" class="d-flex align-items-center nav-link dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <div class="avatar-circle me-2">
+              {{ request.user.first_name|default:request.user.username|first|upper }}
+            </div>
+            <span>{{ request.user.first_name|default:request.user.username }}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <li><a class="dropdown-item" href="{% url 'usuario:signout' %}">Cerrar sesión</a></li>
+          </ul>
+        </div>
 
-    <!-- Contenido principal -->
-    <main class="col-md-10 p-4 content-area">
-      <h2>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h2>
-      <p>Aquí puedes gestionar usuarios, gimnasios y ver estadísticas.</p>
+      </nav>
 
-      {% block content %}
-      <!-- Aquí va el contenido dinámico -->
-      {% endblock %}
-    </main>
+      <!-- Contenido principal -->
+      <main class="col-md-10 p-4 content-area">
+        <h2>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h2>
+        <p>Aquí puedes gestionar usuarios, gimnasios y ver estadísticas.</p>
+
+        {% block content %}
+        <!-- Aquí va el contenido dinámico -->
+        {% endblock %}
+      </main>
+    </div>
   </div>
-</div>
 
-<!-- Menú móvil -->
+  <!-- Menú móvil -->
 <div class="sidebar-mobile">
   <a href="#">
     <img src="{% static 'image/home.svg' %}" alt="Inicio">
@@ -64,8 +76,19 @@
     <img src="{% static 'image/gym.svg' %}" alt="Gimnasios">
     <span>Gimnasios</span>
   </a>
+  <div class="dropdown dropup">
+    <a class="dropdown-toggle d-flex flex-column align-items-center text-decoration-none" href="#" id="dropdownUserMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <span>{{ request.user.first_name|default:request.user.username }}</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end text-center " aria-labelledby="dropdownUserMobile">
+      <li><a class="dropdown-item" href="#">Perfil</a></li>
+      <li><a class="dropdown-item" href="{% url 'usuario:signout' %}">Cerrar sesión</a></li>
+    </ul>
+  </div>
 </div>
 
-</body>
-</html>
 
+
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+{% extends 'administrador/dashboard.html' %}
+
+{% block content %}
+<h2>Crear Entrenador</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h3>Información del Usuario</h3>
+    {{ user_form.as_p }}
+
+    <h3>Información del Entrenador</h3>
+    {{ entrenador_form.as_p }}
+
+    <h3>Redes Sociales</h3>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {{ form.as_p }}
+    {% endfor %}
+
+    <button type="submit">Crear Entrenador</button>
+</form>
+
+<a href="{% url 'usuario:administrador_entrenadores' %}">Volver a la lista</a>
+{% endblock %}

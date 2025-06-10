@@ -1,9 +1,9 @@
 {% extends "administrador/dashboard.html" %}
 
-{% block title %}PowerCheck Administrador - Gimnasios{% endblock %}
+{% block title %}PowerCheck Administrador - Entrenadores{% endblock %}
 
 {% block content %}
-<h3>Lista de Gimnasios</h3>
+<h3>Lista de Entrenadores</h3>
 <div class="table-responsive">
   <table class="table table-hover table-bordered mt-3">
     <thead class="table-light">
@@ -16,15 +16,12 @@
       </tr>
     </thead>
     <tbody>
-      {% for gym in gyms %}
+      {% for entrenador in Entrenadores %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>
-          <img src="{{ gym.logo.url }}" alt="Logo de {{ gym.nombre }}" width="50" height="50" class="rounded">
-        </td>
-        <td>{{ gym.nombre }}</td>
-        <td>{{ gym.ubucacion }}</td>
-        <td>{{ gym.celular }}</td>
+        <td>{{ entrenador.nombre }}</td>
+        <td>{{ entrenador.apellido }}</td>
+        <td>{{ entrenador.celular }}</td>
       </tr>
       {% empty %}
       <tr>
@@ -33,9 +30,9 @@
       {% endfor %}
     </tbody>
   </table>
-  <a href="{% url 'usuario:crear_gym' %}">
-  <button>Crear nuevo gimnasio</button>
-</a>
+  <a href="{% url 'usuario:crear_entrenador' %}">
+  <button>Crear nuevo entrenador</button>
+  </a>
 </div>
 {% endblock %}
 

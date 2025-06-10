@@ -4,8 +4,11 @@ from django.contrib.auth import login ,logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from usuario.decorators import admin_required, entrenador_required, atleta_required
-from .models import Gym
-from .forms import GymForm
+from .models import Gym, Entrenador
+from .forms import GymForm, EntrenadorForm, UserForm, RedSocialForm
+from .forms import RedSocialFormSet
+from django.contrib.auth.models import User,Group
+from django.contrib.auth.hashers import make_password
 
 def inicio(request):
     return render(request,'inicio.html')
@@ -51,7 +54,49 @@ def administrador_dashboard(request):
     return render(request, 'administrador/inicio.html')
 @admin_required
 def administrador_entrenadores(request):
-    return render(request, 'administrador/entrenadores.html')
+    entrenadores = Entrenador.objects.all()
+    return render(request, 'administrador/entrenadores.html', {'entrenadores': entrenadores})
+@admin_required
+def crear_entrenador(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        entrenador_form = EntrenadorForm(request.POST, request.FILES)
+
+        if user_form.is_valid() and entrenador_form.is_valid():
+            # 1. Crear usuario
+            user = user_form.save(commit=False)
+            user.set_password(user_form.cleaned_data['password'])
+            user.save()
+
+            # 2. Agregar al grupo 'entrenador'
+            grupo = Group.objects.get(name='entrenador')
+            user.groups.add(grupo)
+
+            # 3. Crear entrenador
+            entrenador = entrenador_form.save(commit=False)
+            entrenador.usuario = user
+            entrenador.save()
+
+            # 4. Guardar redes sociales
+            formset = RedSocialFormSet(request.POST, instance=entrenador)
+            if formset.is_valid():
+                formset.save()
+
+            return redirect('usuario:administrador_entrenadores')
+        else:
+            formset = RedSocialFormSet(request.POST)
+
+    else:
+        user_form = UserForm()
+        entrenador_form = EntrenadorForm()
+        formset = RedSocialFormSet()
+
+    return render(request, 'administrador/crear_entrenador.html', {
+        'user_form': user_form,
+        'entrenador_form': entrenador_form,
+        'formset': formset
+    })
+
 @admin_required
 def administrador_gimnasios(request):
     Gyms = Gym.objects.all()

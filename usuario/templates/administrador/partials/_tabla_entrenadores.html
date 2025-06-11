@@ -1,0 +1,68 @@
+<table class="table table-hover table-bordered mt-3">
+  <thead class="table-light">
+    <tr>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Usuario</th>
+      <th>Gimnasio</th>
+      <th>Celular</th>
+      <th>Especialidad</th>
+      <th>Redes Sociales</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entrenador in entrenadores %}
+    <tr>
+      <td>{{ entrenador.usuario.first_name }} {{ entrenador.usuario.last_name }}</td>
+      <td>{{ entrenador.usuario.email }}</td>
+      <td>{{ entrenador.usuario.username }}</td>
+      <td>{{ entrenador.gym.nombre }}</td>
+      <td>{{ entrenador.celular }}</td>
+      <td>{{ entrenador.especialidad|default:"-" }}</td>
+      <td>
+        <ul>
+          {% for red in entrenador.redes_sociales.all %}
+            <li><strong>{{ red.get_tipo_display }}:</strong> <a href="{{ red.url }}" target="_blank">{{ red.url }}</a></li>
+          {% empty %}
+            <li>Sin redes sociales</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="7" class="text-center">No se encontraron entrenadores.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if entrenadores.has_other_pages %}
+<div class="d-flex justify-content-center">
+  <ul class="pagination">
+    {% if entrenadores.has_previous %}
+    <li class="page-item">
+      <a class="page-link"
+         hx-get="?q={{ request.GET.q }}&gym={{ request.GET.gym }}&page={{ entrenadores.previous_page_number }}"
+         hx-target="#tabla-entrenadores" hx-push-url="true">&laquo;</a>
+    </li>
+    {% endif %}
+    
+    {% for num in entrenadores.paginator.page_range %}
+      <li class="page-item {% if num == entrenadores.number %}active{% endif %}">
+        <a class="page-link"
+           hx-get="?q={{ request.GET.q }}&gym={{ request.GET.gym }}&page={{ num }}"
+           hx-target="#tabla-entrenadores" hx-push-url="true">{{ num }}</a>
+      </li>
+    {% endfor %}
+
+    {% if entrenadores.has_next %}
+    <li class="page-item">
+      <a class="page-link"
+         hx-get="?q={{ request.GET.q }}&gym={{ request.GET.gym }}&page={{ entrenadores.next_page_number }}"
+         hx-target="#tabla-entrenadores" hx-push-url="true">&raquo;</a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

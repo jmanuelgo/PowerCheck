@@ -17,5 +17,6 @@ urlpatterns = [
     path('administrador/gimnasios/', views.administrador_gimnasios, name='administrador_gimnasios'),
     path('administrador/gimnasios/crear/', views.crear_gym, name='crear_gym'),
     path('administrador/entrenadores/crear/', views.crear_entrenador, name='crear_entrenador'),
+    path('entrenadores/', views.lista_entrenadores, name='entrenadores'),
 
 ]

@@ -9,6 +9,8 @@ from .forms import GymForm, EntrenadorForm, UserForm, RedSocialForm
 from .forms import RedSocialFormSet
 from django.contrib.auth.models import User,Group
 from django.contrib.auth.hashers import make_password
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 def inicio(request):
     return render(request,'inicio.html')
@@ -51,11 +53,17 @@ def signin(request):
 #funciones del administrador
 @admin_required
 def administrador_dashboard(request):
-    return render(request, 'administrador/inicio.html')
+    total_usuarios = User.objects.count()
+    total_entrenadores= Entrenador.objects.count()
+    total_gimnasios = Gym.objects.count()
+    return render(request, 'administrador/inicio.html', {
+        'total_usuarios': total_usuarios,
+        'total_entrenadores': total_entrenadores,
+        'total_gimnasios': total_gimnasios})
 @admin_required
 def administrador_entrenadores(request):
-    entrenadores = Entrenador.objects.all()
-    return render(request, 'administrador/entrenadores.html', {'entrenadores': entrenadores})
+    entrenadores = Entrenador.objects.select_related('usuario', 'gym').prefetch_related('redes_sociales')
+    return render(request, 'administrador/entrenadores.html', {'entrenadores': entrenadores,})
 @admin_required
 def crear_entrenador(request):
     if request.method == 'POST':
@@ -114,6 +122,38 @@ def crear_gym(request):
         form = GymForm()
     
     return render(request, 'administrador/crear_gym.html', {'form': form})
+
+def lista_entrenadores(request):
+    query = request.GET.get("q", "")
+    gym_id = request.GET.get("gym", "")
+    page_number = request.GET.get("page", 1)
+
+    entrenadores = Entrenador.objects.select_related('usuario', 'gym').prefetch_related('redes_sociales').all()
+
+    if query:
+        entrenadores = entrenadores.filter(
+            Q(usuario__first_name__icontains=query) |
+            Q(usuario__last_name__icontains=query) |
+            Q(usuario__email__icontains=query) |
+            Q(usuario__username__icontains=query)
+        )
+
+    if gym_id:
+        entrenadores = entrenadores.filter(gym_id=gym_id)
+
+    paginator = Paginator(entrenadores, 20)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "entrenadores": page_obj,
+        "gyms": Gym.objects.all(),
+        "query": query,
+        "selected_gym": gym_id
+    }
+
+    if request.htmx:
+        return render(request, "administrador/partials/_tabla_entrenadores.html", context)
+    return render(request, "administrador/entrenadores.html", context)
 
 #funciones del entrenador
 @entrenador_required
